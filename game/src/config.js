@@ -1,61 +1,105 @@
-// Every tuning number and colour in one place. The playfield is a fixed 1280x720 logical area;
-// the renderer scales it to the window, so no rule below depends on the screen size.
+// Solara Bay — every tuning number and colour in one place.
+// The world is a fixed 3200x2400 city; the renderer draws a 1280x720 camera view of it,
+// scaled to the window, so no rule below depends on the screen size.
 
-export const FIELD = { width: 1280, height: 720, groundY: 664 };
+export const WORLD = { width: 3200, height: 2400 };
 
 /** The simulation's fixed step, in seconds: 60 updates a second whatever the display's rate. */
 export const STEP = 1 / 60;
 
+/** The camera's logical view size. */
+export const VIEW = { width: 1280, height: 720 };
+
 export const PLAYER = {
-  width: 72,
-  height: 24,
-  speed: 560,
-  invulnerable: 1.5,
+  radius: 14,
+  walkSpeed: 210,
+  runSpeed: 320,
+  health: 100,
+  punchDamage: 12,
+  punchRange: 34,
+  punchArc: 1.1,
+  punchCooldown: 0.35,
 };
 
-export const LIVES = 3;
-
-export const BLOCK = {
-  minWidth: 40,
-  maxWidth: 110,
-  height: 36,
-  speed: 240,
-  speedPerLevel: 30,
-  speedJitter: 90,
-  interval: 0.55,
-  intervalScale: 0.88,
-  minInterval: 0.14,
-  dodgePoints: 1,
+export const CAR = {
+  length: 54,
+  width: 26,
+  accel: 420,
+  brake: 700,
+  reverseAccel: 220,
+  maxSpeed: 520,
+  maxReverse: 160,
+  turnRate: 2.6,
+  grip: 3.2,
+  drag: 0.55,
 };
 
-export const COIN = {
-  size: 24,
-  speed: 190,
-  speedPerLevel: 14,
-  interval: 1.4,
-  intervalJitter: 0.8,
-  points: 10,
+/** Traffic and pedestrian counts. */
+export const TRAFFIC = { cars: 14, peds: 26, policeCars: 3 };
+
+export const WANTED = {
+  decaySeconds: 26,
+  stealCar: 1,
+  hitPed: 2,
+  shoot: 1,
+  killPed: 2,
+  killCop: 3,
+  max: 5,
+  /** Police cars on the hunt per star. */
+  huntersPerStar: 1,
+  /** How close a cop on foot must get to bust the player. */
+  bustRadius: 26,
 };
 
-/** Seconds of play per level, and the last level: speeds and spawn rates stop growing there. */
-export const LEVEL = { seconds: 12, max: 12 };
+export const WEAPONS = {
+  pistol: { damage: 34, range: 420, cooldown: 0.32, price: 500, ammo: 24 },
+};
 
-/** How many falling things can exist at once; the pool is allocated once, at boot. */
-export const POOL_SIZE = 64;
+export const ECONOMY = {
+  startCash: 150,
+  sprayPrice: 200,
+  hospitalPrice: 100,
+  bustedFine: 150,
+  wastedFine: 200,
+};
+
+/** Mission rewards, in dollars. */
+export const MISSION_REWARDS = [200, 350, 450, 500, 1200];
 
 export const PALETTE = {
-  backdrop: '#11141b',
-  sky: '#1b1f2a',
-  ground: '#2a3040',
-  player: '#4fc3f7',
-  block: '#e5534b',
-  coin: '#f2c94c',
-  panel: '#252b38',
-  text: '#eef1f5',
-  muted: '#8b93a3',
+  // Sun-soaked coastal city: warm asphalt, sand, teal sea, terracotta roofs.
+  sea: '#2fa8b5',
+  sand: '#e8d5a3',
+  grass: '#7fb069',
+  parkGrass: '#6da35c',
+  road: '#3d3a38',
+  roadEdge: '#2c2a29',
+  roadLine: '#f5d76e',
+  sidewalk: '#b8b0a4',
+  block: '#cbb89e',
+  buildingRoof: ['#c96f4a', '#b85c5c', '#d9a05b', '#8a6f9e', '#5b8a7a', '#a34d4d'],
+  buildingEdge: '#7a5c48',
+  player: '#2f6df6',
+  playerOutline: '#123a8f',
+  cop: '#1e3a8a',
+  copCar: '#1e3a8a',
+  trafficCar: ['#d94f3d', '#e8a13c', '#4fae62', '#7a6fd0', '#e5e5e5', '#3d8bfd', '#c94f7c'],
+  pedShirt: ['#e74c3c', '#3498db', '#f1c40f', '#9b59b6', '#1abc9c', '#e67e22', '#ecf0f1'],
+  minimapBg: 'rgba(12, 18, 28, 0.78)',
+  hudPanel: 'rgba(12, 18, 28, 0.72)',
+  text: '#f4f1ea',
+  muted: '#b9b3a6',
+  gold: '#f2c94c',
+  red: '#e5534b',
+  green: '#58c184',
+  star: '#ffd94a',
+  marker: '#ff5d8f',
+  markerRing: '#ffffff',
 };
 
-export const FONT = 'system-ui, -apple-system, "Segoe UI", sans-serif';
+/** The font stack for canvas text (system fonts only — no network fonts). */
+export const FONT = 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif';
 
-/** Where the best score is kept between visits (this browser only). */
-export const BEST_KEY = 'block-dodger.best';
+/** Where progress is kept between visits (this browser only). */
+export const SAVE_KEY = 'solara-bay.save.v1';
+export const BEST_KEY = 'solara-bay.best';
